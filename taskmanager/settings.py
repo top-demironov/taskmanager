@@ -28,8 +28,14 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'top-demironov-taskmanager-4a8d.twc1.net']
-CSRF_TRUSTED_ORIGINS = ['https://top-demironov-taskmanager-4a8d.twc1.net',]
+
+# FOR BABY DEPLOY
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'top-demironov-taskmanager-4a8d.twc1.net']
+# CSRF_TRUSTED_ORIGINS = ['https://top-demironov-taskmanager-4a8d.twc1.net',]
+
+# FOR ADULT DEPOLY
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '194.87.56.199']
+CSRF_TRUSTED_ORIGINS = ['http://194.87.56.199',]
 
 # Application definition
 
