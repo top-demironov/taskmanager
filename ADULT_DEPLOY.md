@@ -5,10 +5,33 @@
 
 И также изменяем ALLOWED_HOSTS
 
-## Шаг 1. Подключаемся и ставим нужные штуки
+## Шаг 1. Подключаемся, создаем пользователя и устанавливаем всякие штуки
 ```bash
 ssh username@your.server.ip
 ```
+
+```bash
+adduser hugant
+```
+
+Указываем пароль и данные.
+
+Дадим пользователю права `sudo`
+
+```bash
+usermod -aG sudo hugant
+```
+
+Теперь переходим на нашего созданного пользователя:
+```bash
+su - hugant
+```
+
+Если только открыли консоль, то можно будет писать так:
+```bash
+ssh hugant@your.server.ip
+```
+
 
 Обновляем и ставим:
 ```bash
@@ -19,9 +42,10 @@ sudo apt install python3-pip python3-venv nginx git -y
 ## Шаг 2. Загружаем проект
 
 ```bash
-mkdir ~/taskmanager
-cd ~/taskmanager
-git clone https://github.com/top-demironov/taskmanager.git .
+cd ~
+mkdir taskmanager
+cd taskmanager
+git clone https://github.com/yourusername/taskmanager.git .
 ```
 
 ## Шаг 3. Виртуалка + зависимости
@@ -58,6 +82,14 @@ python manage.py collectstatic
 python manage.py createsuperuser
 ```
 
+Дадим права `nginx` и другим пользователям, иначе статика будет недоступна:
+```bash
+sudo chmod o+x /home
+sudo chmod o+x /home/hugant
+sudo chmod o+x /home/hugant/taskmanager
+sudo chmod -R o+rX /home/hugant/taskmanager/static
+```
+
 ## Шаг 6. Пробуем `gunicorn`
 ```bash
 gunicorn taskmanager.wsgi:application --bind 127.0.0.1:8000
@@ -75,18 +107,18 @@ gunicorn taskmanager.wsgi:application --bind 127.0.0.1:8000
 sudo nano /etc/systemd/system/taskmanager.service
 ```
 
-Вставь (замени `root` (если другой пользователь) и `taskmanager` (если другое название проекта)):
+Вставь (замени `hugant` и `taskmanager`):
 ```ini
 [Unit]
 Description=Gunicorn for taskmanager
 After=network.target
 
 [Service]
-User=root
+User=hugant
 Group=www-data
-WorkingDirectory=/root/taskmanager
-Environment="PATH=/root/taskmanager/venv/bin"
-ExecStart=/root/taskmanager/venv/bin/gunicorn taskmanager.wsgi:application --bind 127.0.0.1:8000
+WorkingDirectory=/home/hugant/taskmanager
+Environment="PATH=/home/hugant/taskmanager/venv/bin"
+ExecStart=/home/hugant/taskmanager/venv/bin/gunicorn taskmanager.wsgi:application --bind 127.0.0.1:8000
 
 [Install]
 WantedBy=multi-user.target
@@ -114,14 +146,14 @@ systemctl status taskmanager
 sudo nano /etc/nginx/sites-available/taskmanager
 ```
 
-Пример:
+Пример, не забудь изменить `ip сервера` и `hugant`:
 ```nginx
 server {
     listen 80;
     server_name 194.87.56.199;
 
     location /static/ {
-        root /root/taskmanager;
+        alias /home/hugant/taskmanager/static/;
     }
 
     location / {

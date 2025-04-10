@@ -54,7 +54,8 @@ ALLOWED_HOSTS = ['*']
 
 Укажите, где будут храниться собранные статические файлы:
 ```python
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 ```
 
 Убедитесь, что у вас установлен `gunicorn`:
@@ -80,11 +81,57 @@ pip freeze > requirements.txt
 1. *Тип проекта* - `Django`, находиться во вкладке `backend`
 2. *Репозиторий* - нажимаем `Добавить аккаунт`, выбираем GitHub и следуем инструкциям. После если нужно выбираем другую ветку.
 3. *Регион* - выбираем регион сервера, если используете какие-то api, которые не работают в России, выбирайте `Нидерланды`.
-4. *Конфигурация* - выбираем самую простую, много не потребуется, кому не жалко можно по-лучше взять)
-5. *Сеть* - пропускаем
-6. *Настройка приложения* - в `Команда запуска` устанавливаем `gunicorn taskmanager.wsgi:application`, здесь `taskmanager` это название папки, где находиться `settings.py`
-7. *Инофрмация о приложении* - для удобства можно назвать приложение и дать ему комментарий
+4. *Конфигурация* - выбираем самую простую, много не потребуется, кому не жалко можно по-лучше взять).
+5. *Сеть* - пропускаем.
+6. *Настройка приложения* - в `Команда запуска` устанавливаем `python3 manage.py runserver 0.0.0.0:8000`. И добавляем переменные среды, которые у нас в файле `.env`.
+7. *Инофрмация о приложении* - для удобства можно назвать приложение и дать ему комментарий.
 
-Нажимаем `Запустить деплой`. 
+Нажимаем `Запустить деплой`.
 
-python3 manage.py runserver 0.0.0.0:8000
+После запуска на странице `Дашбоард` мы видим нашу ссылку на сервис. Копируем ее.
+
+В `settings.py` изменяем:
+
+```python
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'top-demironov-taskmanager-4a8d.twc1.net']
+CSRF_TRUSTED_ORIGINS = ['https://top-demironov-taskmanager-4a8d.twc1.net',]  # Здесь обязательно с https://
+```
+
+## Шаг 4. Делаем миграции и создаем суперпользователя
+
+Где дашбоард приложения (где копировали ссылку), переходим на вкладку Консоль и там прописываем команды для миграций:
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+И также создаем суперпользователя:
+```bash
+python manage.py createsuperuser
+```
+
+## Шаг 5. Вроде работает, но что со статикой?
+
+Так как на Timeweb apps нет встроенного `nginx`, то для обработки статики нужно добавить `WhiteNoise`.
+
+Устанавливаем и добавляем в `requirements.txt`:
+```bash
+pip install whitenoise
+pip freeze > requirements.txt
+```
+
+В `settings.py` добавляем:
+
+```python
+MIDDLEWARE = [
+  'django.middleware.security.SecurityMiddleware',
+  ...
+  'whitenoise.middleware.WhiteNoiseMiddleware',  # вот он
+]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+```
+
+## Шаг 6. Должно работать
+
+Если ошибка, ставим `DEBUG=True`, на timeweb и начинаем дебажить.
