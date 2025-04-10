@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="mb-5">Создание задачи</h1>
+    
+    <form action="{% url 'tasks_create' %}" method="post">
+        {% csrf_token %}
+    
+        <div class="form-floating mb-3">
+            {{ form.project }}
+            <label for="floatingSelect">Проект</label>
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.title }}
+            <label for="floatingTitle">Название задачи</label>
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.description }}
+            <label for="floatingDescription">Описание задачи</label>
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.due_date }}
+            <label for="floatingDueDate">Срок исполнения задачи</label>
+        </div>
+        <div class="d-flex pt-4">
+            <button type="submit" class="btn btn-primary">Создать задачу</button>
+        </div>
+    </form>
+{% endblock %}

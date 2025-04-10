@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ project.name }}</h1>
+    <pre class="text-body-secondary">{{ project.description }}</pre>
+    <p class="mb-5 text-body-secondary">Проект создан {{ project.created_at }}</p>
+
+    <div class="row gap-3">
+        <h2>Задачи проекта</h2>
+        {% for task in tasks %}
+            <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">{{ task.status }} - {{ task.due_date }}</h6>
+                    <pre class="card-text">{{ task.description }}</pre>
+                    <a href="#" class="card-link">Посмотреть задачу</a>
+                  </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Еще нет задач</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Смотрю вы любите отдыхать...</h6>
+                    <p class="card-text">Всем известно, что слона проще есть по частям</p>
+                    <a href="#" class="card-link">Создать задачу</a>
+                  </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

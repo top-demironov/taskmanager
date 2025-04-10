@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Список исполнителей</h1>
+    <p class="mb-5 text-body-secondary">Каждый исполнитель может участвовать в любой задачи из любого проекта</p>
+    <div class="row ">
+        {% for performer in performers %}
+            <div class="col-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ performer.lastname }} {{ performer.firstname }}</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">{{ performer.email}}</h6>
+                  </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Еще нет исполнителей</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Если вы работаете один, то вы либо дурак, либо сверхчеловек</h6>
+                    <p class="card-text">Каждой задаче требуется ответственный исполнитель, иначе она просто не будет выполняться</p>
+                    <a href="#" class="card-link">Создать исполнителя</a>
+                  </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

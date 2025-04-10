@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Система управления проектами</h1>
+    <p class="mb-5 text-body-secondary">В современном мире, где проекты становятся всё более сложными и многозадачными,
+        использование системы управления проектами становится необходимостью для успешного выполнения задач. Она
+        помогает командам эффективно работать над проектами, управлять ресурсами и достигать поставленных целей в
+        установленные сроки.
+    </p>
+    <div class="row flex-column gap-4 align-items-center">
+        <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Создайте проект</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Позволит проще управлять</h6>
+                <p class="card-text">Проект должен нести определенный смысл, в него будут добавляться задачи, все структурировано</p>
+                <a href="{% url 'projects_create' %}" class="card-link">Создать проект</a>
+              </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Создайте исполнителей проекта</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Разделяй и управляй</h6>
+                <p class="card-text">Каждой задаче требуется ответственный исполнитель, иначе она просто не будет выполняться</p>
+                <a href="#" class="card-link">Создать исполнителя</a>
+              </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Создайте задачи для проекта</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Декомпозируйте что-то большое</h6>
+                <p class="card-text">Всем известно, что слона проще есть по частям</p>
+                <a href="{% url 'tasks_create' %}" class="card-link">Создать задачу</a>
+              </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <a href="{% url 'projects' %}">Взглянуть на проекты</a>
+        </div>
+    </div>
+{% endblock %}

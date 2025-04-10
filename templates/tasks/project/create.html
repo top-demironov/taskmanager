@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="mb-5">Создание проекта</h1>
+    <form action="{% url 'projects_create' %}" method="post">
+        {% csrf_token %}
+        <div class="form-floating mb-3">
+          <input name="name" type="text" class="form-control" id="floatingName" placeholder="Самый лучший проект" required>
+          <label for="floatingName">Название проекта</label>
+        </div>
+        <div class="form-floating">
+          <textarea name="description" class="form-control" id="floatingDescription" placeholder="Описание проекта" 
+                    style="height: 160px;" required></textarea>
+          <label for="floatingDescription">Описание</label>
+        </div>
+        <div class="d-flex pt-4">
+            <button type="submit" class="btn btn-primary">Создать проект</button>
+        </div>
+    </form>
+{% endblock %}
