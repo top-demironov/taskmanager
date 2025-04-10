@@ -137,3 +137,11 @@ sudo ln -s /etc/nginx/sites-available/taskmanager /etc/nginx/sites-enabled
 sudo nginx -t
 sudo systemctl restart nginx
 ```
+
+
+## Должно работать
+
+Если что-то изменили в коде, нужно перезапустить сервис
+```bash
+sudo systemctl restart taskmanager
+```
