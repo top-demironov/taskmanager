@@ -28,8 +28,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'top-demironov-taskmanager-4a8d.twc1.net']
+CSRF_TRUSTED_ORIGINS = ['https://top-demironov-taskmanager-4a8d.twc1.net',]
 
 # Application definition
 
